@@ -251,7 +251,7 @@ IA
 
 # 📌 Arquitetura do Software 🏗️
 Arquitetura escolhida:
-- Arquitetura Modular Monolith;
+- Arquitetura Monólito Modular;
 - DDD;
 - Hexagonal (Ports and Adapters).
 
@@ -259,3 +259,201 @@ Essa escolha é particularmente escolhida devido o MVP precisa ser suficientemen
 
 E irá evoluir posteriormente para microserviços quando houver uma justificativa real.
 
+```
+                 ┌─────────────────────────────┐
+                 │          FRONTEND           │
+                 │      Web Application        │
+                 └──────────────┬──────────────┘
+                                │
+                              HTTPS
+                                │
+                                ▼
+                 ┌─────────────────────────────┐
+                 │        API / BFF            │
+                 │     REST Controllers        │
+                 └──────────────┬──────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    MODULAR MONOLITH                         │
+│                                                             │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐    │
+│  │ Identity │ │ Tenant   │ │ Clients  │ │  Processes   │    │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────────┘    │
+│                                                             │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐    │
+│  │Activity  │ │ Finance  │ │Document  │ │Notification  │    │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────────┘    │
+│                                                             │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐                     │
+│  │ Audit    │ │ Export   │ │ Backup   │                     │
+│  └──────────┘ └──────────┘ └──────────┘                     │
+│                                                             │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           ▼
+                    ┌─────────────┐
+                    │  DATABASE   │
+                    └──────┬──────┘
+                           │
+             ┌─────────────┼──────────────┐
+             ▼             ▼              ▼
+        E-mail API    Judicial APIs   Storage
+```
+
+O ponto principal é:
+> Um único deploy no MVP, mas módulos de negócio fortemente isolados internamente.
+
+## Frontend
+```
+src/
+├── core
+├── shared
+├── auth
+├── dashboard
+├── clients
+├── processes
+├── activities
+├── finance
+├── users
+├── permissions
+└── settings
+```
+
+## Backend
+```
+src/main/java/com/seuprojeto
+│
+├── shared
+│   ├── domain
+│   ├── exception
+│   └── infrastructure
+│
+├── identity
+│   ├── domain
+│   ├── application
+│   ├── adapter
+│   └── configuration
+│
+├── tenant
+│   ├── domain
+│   ├── application
+│   ├── adapter
+│   └── configuration
+│
+├── authorization
+│   ├── domain
+│   ├── application
+│   └── adapter
+│
+├── client
+│   ├── domain
+│   ├── application
+│   ├── adapter
+│   └── configuration
+│
+├── legalprocess
+│   ├── domain
+│   ├── application
+│   ├── adapter
+│   └── configuration
+│
+├── activity
+│   ├── domain
+│   ├── application
+│   ├── adapter
+│   └── configuration
+│
+├── finance
+│   ├── domain
+│   ├── application
+│   ├── adapter
+│   └── configuration
+│
+├── document
+│   ├── domain
+│   ├── application
+│   └── adapter
+│
+├── notification
+│   ├── domain
+│   ├── application
+│   └── adapter
+│
+├── audit
+│   ├── domain
+│   ├── application
+│   └── adapter
+│
+├── exportdata
+│   ├── application
+│   └── adapter
+│
+└── backup
+    ├── application
+    └── adapter
+```
+
+Cada módulo possui sua própria arquitetura interna. Por exemplo:
+```
+client
+│
+├── domain
+│   ├── model
+│   ├── service
+│   └── repository
+│
+├── application
+│   ├── usecase
+│   ├── command
+│   └── query
+│
+├── adapter
+│   ├── input
+│   │   └── web
+│   └── output
+│       └── persistence
+│
+└── configuration
+```
+
+Como funciona a comunicação Hexagonal:
+```
+             ADAPTER
+                │
+                ▼
+          INPUT PORT
+                │
+                ▼
+          APPLICATION
+                │
+                ▼
+           DOMAIN
+                │
+                ▼
+          OUTPUT PORT
+                │
+                ▼
+             ADAPTER
+```
+
+## Banco de dados
+**PostgreSQL**.
+
+Motivos:
+- excelente suporte relacional;
+- robusto;
+- open source;
+- ótimo suporte no ecossistema Java/Spring;
+- adequado para SaaS;
+- suporta crescimento;
+- excelente para containers;
+- permite evoluir posteriormente.
+
+O banco não é criado automaticamente pelo Hibernate em produção e sim com **Flyway**.
+```
+V1__create_tenant.sql
+V2__create_user.sql
+V3__create_client.sql
+V4__create_process.sql
+```
