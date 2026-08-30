@@ -1,4 +1,4 @@
-# Sistema de Gestão Jurídica SaaS
+# 📌 Sistema de Gestão Jurídica SaaS
 
 **Versão**: 1.0
 
@@ -10,12 +10,12 @@
 
 **Aplicação acadêmica**: MVP utilizado como projeto de TCC em Análise e Desenvolvimento de Sistemas
 
-# Problema
+# 📌 Problema
 Escritórios de advocacia precisam administrar informações jurídicas, atividades e informações financeiras, muitas vezes utilizando ferramentas separadas.
 
 Além disso, a utilização das ferramentas jurídicas não são intuitivas, dificultando o desenvolvimento do trabalho.
 
-# Visão do Produto
+# 📌 Visão do Produto
 
 Apresentar a visão completa da plataforma **SaaS de gestão para escritórios de advocacia**, destinada a centralizar informações jurídicas, operacionais e financeiras em um único ambiente.
 
@@ -46,7 +46,7 @@ O objetivo é permitir que um escritório gerencie:
 
 O sistema será concebido desde o início como uma plataforma multi-tenant, permitindo que diferentes escritórios utilizem a mesma infraestrutura sem que exista compartilhamento indevido de dados.
 
-# Objetivos do Produto
+# 📌 Objetivos do Produto
 ## 2.1 Objetivo geral
 
 Desenvolver um MVP funcional capaz de demonstrar a viabilidade técnica da solução para escritórios de advocacia na **organização, acompanhamento e administração de suas atividades jurídicas e financeiras**.
@@ -69,7 +69,7 @@ O sistema deverá:
 - Permitir notificações aos usuários.
 - Criar uma base tecnológica capaz de evoluir para uma plataforma comercial.
 
-# Implementação funcional
+# 📌 Implementação funcional
 ```
 TCC
  │
@@ -85,7 +85,7 @@ TCC
        └── Testes
 ```
 
-# MVP
+# 📌 MVP
 ## Fluxo de utilização de um escritório
 ```
 Proprietário cria escritório
@@ -189,7 +189,7 @@ Plano
 ## O foco do MVP
 > SaaS multi-tenant + controle de permissões + gestão jurídica + delegação de atividades + financeiro básico.
 
-# Teste
+# 📌 Teste
 ## Testes unitários
 Regras de negócio.
 
@@ -211,7 +211,7 @@ Usuário com permissão → Criar processo → PERMITIDO
 ## Teste de isolamento multi-tenant
 Esse seria particularmente importante para o seu projeto.
 
-# Roadmap futuro
+# 📌 Roadmap futuro
 - integração real com todos os tribunais;
 - WhatsApp;
 - Telegram;
@@ -225,7 +225,7 @@ Esse seria particularmente importante para o seu projeto.
 - integrações contábeis;
 - recursos avançados de documentos.
 
-# Documento
+# 📌 Documento
 ## Documento 1 — Visão do Produto
 Descreve o sistema completo:
 > Free + Pago + Business/Enterprise + integrações + financeiro completo + notificações + futuras funcionalidades.
@@ -249,9 +249,13 @@ Enterprise
 IA
 ```
 
-# Prompt
-```
-O foco do MVP é SaaS multi-tenant + controle de permissões + gestão jurídica + delegação de atividades + financeiro básico.
+# 📌 Arquitetura do Software 🏗️
+Arquitetura escolhida:
+- Arquitetura Modular Monolith;
+- DDD;
+- Hexagonal (Ports and Adapters).
 
-Assuma o papel de arquiteto de software e me informe qual arquitetura profissional deve ser implementada desde o início para a construção do MVP pensando no sistema completo.
-```
+Essa escolha é particularmente escolhida devido o MVP precisa ser suficientemente simples para o TCC.
+
+E irá evoluir posteriormente para microserviços quando houver uma justificativa real.
+
