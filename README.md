@@ -183,7 +183,7 @@ Indicadores básicos:
 ```
 Plano
 ├── FREE
-└── PAGO
+└── PAGO ❌ (Não será implementado no MVP)
 ```
 
 ## O foco do MVP
