@@ -18,10 +18,11 @@ Sistema de Gestão Jurídica SaaS multi-tenant para escritórios de advocacia (M
 - **Multi-tenancy:** schema compartilhado com coluna `tenant_id` em toda tabela de negócio; filtro na aplicação (Hibernate `@TenantId` / `@Filter`) e Row-Level Security no PostgreSQL.
 - O `tenant_id` vem **sempre do token JWT**, nunca de parâmetro, header ou corpo da requisição.
 - Cada módulo é dono das suas tabelas: sem JOIN ou acesso direto a tabelas de outro módulo.
-- Um módulo só acessa outro pela API pública; nunca pelo `domain` ou `adapter` interno.
+- Um módulo só acessa outro pela API pública; nunca pelo `dominio` ou `adaptador` interno.
 - Efeitos colaterais entre módulos (notificação, auditoria) via eventos de domínio.
 - Schema do banco criado apenas por migrações Flyway (incluindo políticas de RLS), nunca pelo Hibernate.
-- DDD tático completo em `authorization`, `tenant`, `activity`, `legalprocess`, `finance`; estrutura simplificada em `client`, categorias e `dataportability`.
+- DDD tático completo em `autorizacao`, `escritorio`, `atividade`, `processo`, `financeiro`; estrutura simplificada em `cliente`, categorias e `portabilidade`.
+- Pacotes e módulos (backend e frontend) em **português**, minúsculas e sem acentos (ex.: `processo`, `notificacao`, `adaptador.entrada.web`).
 
 ## Regras do Sistema de Design
 Essas regras previnem as inconsistências visuais encontradas e corrigidas na auditoria de UI/UX. Siga-as rigorosamente ao escrever ou editar qualquer componente.

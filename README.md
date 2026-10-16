@@ -230,7 +230,7 @@ Usuário com permissão → Criar processo → PERMITIDO
 
 ## Testes de arquitetura
 - Verificação das fronteiras entre módulos com **Spring Modulith** (complementado por **ArchUnit** quando necessário).
-- Garante que nenhum módulo acesse o `domain` ou o `adapter` interno de outro módulo.
+- Garante que nenhum módulo acesse o `dominio` ou o `adaptador` interno de outro módulo.
 
 # 📌 Roadmap futuro
 - integração real com todos os tribunais;
@@ -297,15 +297,15 @@ E irá evoluir posteriormente para microserviços quando houver uma justificativ
 │  └─────────────────────────────────────────────────────────────────────┘  │
 │                                                                           │
 │  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐ ┌───────────────┐  │
-│  │   Identity    │ │    Tenant     │ │ Authorization │ │    Client     │  │
+│  │  Identidade   │ │  Escritório   │ │  Autorização  │ │    Cliente    │  │
 │  └───────────────┘ └───────────────┘ └───────────────┘ └───────────────┘  │
 │                                                                           │
 │  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐ ┌───────────────┐  │
-│  │ LegalProcess  │ │   Activity    │ │    Finance    │ │   Document    │  │
+│  │   Processo    │ │   Atividade   │ │  Financeiro   │ │   Documento   │  │
 │  └───────────────┘ └───────────────┘ └───────────────┘ └───────────────┘  │
 │                                                                           │
 │  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐                    │
-│  │ Notification  │ │     Audit     │ │DataPortability│                    │
+│  │  Notificação  │ │   Auditoria   │ │ Portabilidade │                    │
 │  └───────────────┘ └───────────────┘ └───────────────┘                    │
 │                                                                           │
 │  Adaptadores de saída: persistência, e-mail, tribunais e storage          │
@@ -318,7 +318,7 @@ E irá evoluir posteriormente para microserviços quando houver uma justificativ
 ```
 
 Observações sobre o diagrama:
-- Não existe uma camada "API / BFF" separada: na arquitetura hexagonal, os controllers REST são **adaptadores de entrada dentro de cada módulo** (`adapter/input/web`).
+- Não existe uma camada "API / BFF" separada: na arquitetura hexagonal, os controllers REST são **adaptadores de entrada dentro de cada módulo** (`adaptador/entrada/web`).
 - E-mail API, Judicial APIs e Storage são acessados pelo **monólito**, por meio de adaptadores de saída, e não pelo banco de dados.
 
 O ponto principal é:
@@ -328,17 +328,17 @@ O ponto principal é:
 Sem verificação automática, o monólito modular tende a se tornar um monólito acoplado. Por isso:
 - As fronteiras são verificadas automaticamente com **Spring Modulith** (dependências entre módulos, eventos e documentação), complementado por **ArchUnit** quando necessário.
 - Cada módulo é dono das suas próprias tabelas; um módulo não faz JOIN nem acessa diretamente tabelas de outro módulo.
-- Um módulo só acessa outro pela sua **API pública** (interfaces expostas), nunca pelo `domain` ou `adapter` interno.
+- Um módulo só acessa outro pela sua **API pública** (interfaces expostas), nunca pelo `dominio` ou `adaptador` interno.
 
 Essa regra é o que torna viável a futura extração para microserviços.
 
 ## Comunicação entre módulos
 - **Chamada síncrona**: via API pública do módulo (interface Java), quando a resposta é necessária imediatamente.
-- **Eventos de domínio**: para efeitos colaterais, como `Notification` e `Audit`.
+- **Eventos de domínio**: para efeitos colaterais, como `notificacao` e `auditoria`.
 
 ```
-Activity ──(AtividadeDelegadaEvent)──► Notification
-Finance  ──(PagamentoRegistradoEvent)──► Audit
+Atividade  ──(AtividadeDelegadaEvent)──► Notificação
+Financeiro ──(PagamentoRegistradoEvent)──► Auditoria
 ```
 
 Os eventos utilizam `ApplicationEvent` do Spring com o **registro de publicação de eventos do Spring Modulith** (Event Publication Registry), que garante que o evento não seja perdido caso o consumidor falhe.
@@ -348,140 +348,142 @@ Aplicar a mesma estrutura completa em todos os módulos geraria excesso de códi
 
 | Módulo | Abordagem |
 |---|---|
-| `authorization`, `tenant`, `activity`, `legalprocess`, `finance` | DDD tático completo (agregados, invariantes, portas e adaptadores) |
-| `client`, categorias, `dataportability` | Estrutura simplificada (mais próxima de CRUD) |
+| `autorizacao`, `escritorio`, `atividade`, `processo`, `financeiro` | DDD tático completo (agregados, invariantes, portas e adaptadores) |
+| `cliente`, categorias, `portabilidade` | Estrutura simplificada (mais próxima de CRUD) |
 
 ## Frontend
 ```
 src/
-├── core
-├── shared
-├── auth
-├── dashboard
-├── clients
-├── processes
-├── activities
-├── finance
-├── documents
-├── notifications
-├── users
-├── permissions
-└── settings
+├── nucleo
+├── compartilhado
+├── autenticacao
+├── painel (dashboard)
+├── clientes
+├── processos
+├── atividades
+├── financeiro
+├── documentos
+├── notificacoes
+├── usuarios
+├── permissoes
+└── configuracoes
 ```
 
 ## Backend
 ```
 src/main/java/com/seuprojeto
 │
-├── shared
-│   ├── domain
-│   ├── exception
-│   └── infrastructure
+├── compartilhado
+│   ├── dominio
+│   ├── excecao
+│   └── infraestrutura
 │
-├── identity
-│   ├── domain
-│   ├── application
-│   ├── adapter
-│   └── configuration
+├── identidade
+│   ├── dominio
+│   ├── aplicacao
+│   ├── adaptador
+│   └── configuracao
 │
-├── tenant
-│   ├── domain
-│   ├── application
-│   ├── adapter
-│   └── configuration
+├── escritorio
+│   ├── dominio
+│   ├── aplicacao
+│   ├── adaptador
+│   └── configuracao
 │
-├── authorization
-│   ├── domain
-│   ├── application
-│   └── adapter
+├── autorizacao
+│   ├── dominio
+│   ├── aplicacao
+│   └── adaptador
 │
-├── client
-│   ├── domain
-│   ├── application
-│   ├── adapter
-│   └── configuration
+├── cliente
+│   ├── dominio
+│   ├── aplicacao
+│   ├── adaptador
+│   └── configuracao
 │
-├── legalprocess
-│   ├── domain
-│   ├── application
-│   ├── adapter
-│   └── configuration
+├── processo
+│   ├── dominio
+│   ├── aplicacao
+│   ├── adaptador
+│   └── configuracao
 │
-├── activity
-│   ├── domain
-│   ├── application
-│   ├── adapter
-│   └── configuration
+├── atividade
+│   ├── dominio
+│   ├── aplicacao
+│   ├── adaptador
+│   └── configuracao
 │
-├── finance
-│   ├── domain
-│   ├── application
-│   ├── adapter
-│   └── configuration
+├── financeiro
+│   ├── dominio
+│   ├── aplicacao
+│   ├── adaptador
+│   └── configuracao
 │
-├── document
-│   ├── domain
-│   ├── application
-│   └── adapter
+├── documento
+│   ├── dominio
+│   ├── aplicacao
+│   └── adaptador
 │
-├── notification
-│   ├── domain
-│   ├── application
-│   └── adapter
+├── notificacao
+│   ├── dominio
+│   ├── aplicacao
+│   └── adaptador
 │
-├── audit
-│   ├── domain
-│   ├── application
-│   └── adapter
+├── auditoria
+│   ├── dominio
+│   ├── aplicacao
+│   └── adaptador
 │
-└── dataportability
-    ├── application
-    └── adapter
+└── portabilidade
+    ├── aplicacao
+    └── adaptador
 ```
+
+> Os nomes de pacotes seguem a convenção Java: minúsculas e sem acentos (ex.: `escritorio`, `notificacao`).
 
 Os módulos com DDD tático completo possuem a seguinte arquitetura interna. Por exemplo:
 ```
-legalprocess
+processo
 │
-├── domain
-│   ├── model
-│   ├── service
-│   └── repository
+├── dominio
+│   ├── modelo
+│   ├── servico
+│   └── repositorio
 │
-├── application
-│   ├── usecase
-│   ├── command
-│   └── query
+├── aplicacao
+│   ├── casodeuso
+│   ├── comando
+│   └── consulta
 │
-├── adapter
-│   ├── input
+├── adaptador
+│   ├── entrada
 │   │   └── web
-│   └── output
-│       └── persistence
+│   └── saida
+│       └── persistencia
 │
-└── configuration
+└── configuracao
 ```
 
-Os módulos simplificados (como `client`) mantêm a separação entre `domain`, `application` e `adapter`, mas sem agregados elaborados nem separação entre `command` e `query`.
+Os módulos simplificados (como `cliente`) mantêm a separação entre `dominio`, `aplicacao` e `adaptador`, mas sem agregados elaborados nem separação entre `comando` e `consulta`.
 
 Como funciona a comunicação Hexagonal:
 ```
-             ADAPTER
+           ADAPTADOR
                 │
                 ▼
-          INPUT PORT
+        PORTA DE ENTRADA
                 │
                 ▼
-          APPLICATION
+           APLICAÇÃO
                 │
                 ▼
-           DOMAIN
+            DOMÍNIO
                 │
                 ▼
-          OUTPUT PORT
+         PORTA DE SAÍDA
                 │
                 ▼
-             ADAPTER
+           ADAPTADOR
 ```
 
 ## Banco de dados
@@ -500,30 +502,30 @@ Motivos:
 
 O banco não é criado automaticamente pelo Hibernate em produção e sim com **Flyway**. As migrações também criam as **políticas de RLS** das tabelas de negócio.
 ```
-V1__create_tenant.sql
-V2__create_user.sql
-V3__create_client.sql
-V4__create_process.sql
+V1__criar_escritorio.sql
+V2__criar_usuario.sql
+V3__criar_cliente.sql
+V4__criar_processo.sql
 ```
 
 ## Auditoria
-- Implementada pelo módulo `audit` como **listener de eventos de domínio** publicados pelos demais módulos (mesmo mecanismo da seção [Comunicação entre módulos](#comunicação-entre-módulos)).
-- Os registros são gravados na tabela `audit_log`:
+- Implementada pelo módulo `auditoria` como **listener de eventos de domínio** publicados pelos demais módulos (mesmo mecanismo da seção [Comunicação entre módulos](#comunicação-entre-módulos)).
+- Os registros são gravados na tabela `registro_auditoria`:
 
 | Coluna | Descrição |
 |---|---|
 | `id` | Identificador do registro |
 | `tenant_id` | Escritório ao qual o registro pertence |
-| `user_id` | Usuário que executou a ação |
-| `action` | Ação executada (criação, alteração, exclusão etc.) |
-| `entity` / `entity_id` | Entidade afetada e seu identificador |
-| `occurred_at` | Data/hora da operação |
-| `changed_data` | Dados alterados (JSONB) |
+| `usuario_id` | Usuário que executou a ação |
+| `acao` | Ação executada (criação, alteração, exclusão etc.) |
+| `entidade` / `entidade_id` | Entidade afetada e seu identificador |
+| `ocorrido_em` | Data/hora da operação |
+| `dados_alterados` | Dados alterados (JSONB) |
 
 ## Backup e portabilidade de dados
 O backup oferecido pelo sistema refere-se aos **dados do escritório** (todos os registros do seu `tenant_id`), e não ao banco de dados inteiro.
 
-- **Backup completo do escritório**: em schema compartilhado, consiste na extração de todos os registros com o `tenant_id` do escritório. Por isso, backup e exportação são unificados em um único módulo: **`dataportability`**.
+- **Backup completo do escritório**: em schema compartilhado, consiste na extração de todos os registros com o `tenant_id` do escritório. Por isso, backup e exportação são unificados em um único módulo: **`portabilidade`**.
 - **Exportação de dados**: utiliza o mesmo módulo, permitindo exportar o conjunto completo ou parte dos dados do escritório.
 - O acesso é restrito a usuários com a permissão correspondente (por exemplo, o proprietário do escritório).
 - **Backup da infraestrutura** (banco inteiro, com todos os escritórios) é responsabilidade operacional (`pg_dump`, snapshot), não é um módulo de negócio e não fica disponível aos usuários do sistema.
