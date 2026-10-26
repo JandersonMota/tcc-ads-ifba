@@ -89,12 +89,12 @@ TCC
 
 | Item | Tecnologia | Situação |
 |---|---|---|
-| Linguagem | Java 25 (LTS) | ✅ Definido |
-| Build e dependências | Maven 3.10.0 | ✅ Definido |
-| IDE | IntelliJ IDEA | ✅ Definido |
+| Linguagem | [Java 25 (LTS)](https://www.oracle.com/br/java/technologies/downloads/#jdk25-windows) | ✅ Definido |
+| Build e dependências | [Maven 3.10.0](https://maven.apache.org/download.cgi) | ✅ Definido |
+| IDE | [IntelliJ IDEA](https://www.jetbrains.com/idea/download/?section=windows) | ✅ Definido |
 | Banco de dados | PostgreSQL | ✅ Definido |
 | Migrações de banco | Flyway | ✅ Definido |
-| Framework backend | Spring Boot (versão compatível com Java 25) | ⏳ Versão a definir |
+| Framework backend | [Spring Boot](https://start.spring.io/) (versão compatível com Java 25) | ⏳ Versão a definir |
 | Persistência | Spring Data JPA / Hibernate | ⏳ Versão a definir |
 | Modularidade | Spring Modulith | ⏳ Versão a definir |
 | Autenticação/autorização | Spring Security + JWT | ⏳ Emissor do token a definir (próprio ou Spring Authorization Server) |
