@@ -7,9 +7,10 @@ Sistema de Gestão Jurídica SaaS multi-tenant para escritórios de advocacia (M
 - **Linguagem:** Java 25 (LTS)
 - **Build:** Maven 3.10.0
 - **IDE:** IntelliJ IDEA
-- **Framework:** Spring Boot (versão a definir), Spring Data JPA / Hibernate, Spring Modulith, Spring Security + JWT
+- **Framework:** Spring Boot 4.1.2, Spring Data JPA / Hibernate 7.4, Spring Modulith 2.1.1, Spring Security 7.1 + JWT (OAuth2 Resource Server), SpringDoc OpenAPI 3.2.0, Spring Boot Actuator
 - **Banco de Dados:** PostgreSQL, com migrações via Flyway
-- **Testes:** JUnit, Testcontainers, Spring Modulith Test / ArchUnit
+- **Testes:** JUnit 6, Testcontainers 2, Spring Modulith Test / ArchUnit
+- **Código do backend:** repositório `tcc-backend-ads-ifba`, pacote raiz `br.com.leija`, classe principal `TccBackendAdsIfbaApplication`
 - **Containers:** Docker
 - **Frontend:** a definir
 

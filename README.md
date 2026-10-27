@@ -94,11 +94,13 @@ TCC
 | IDE | [IntelliJ IDEA](https://www.jetbrains.com/idea/download/?section=windows) | ✅ Definido |
 | Banco de dados | PostgreSQL | ✅ Definido |
 | Migrações de banco | Flyway | ✅ Definido |
-| Framework backend | [Spring Boot](https://start.spring.io/) (versão compatível com Java 25) | ⏳ Versão a definir |
-| Persistência | Spring Data JPA / Hibernate | ⏳ Versão a definir |
-| Modularidade | Spring Modulith | ⏳ Versão a definir |
-| Autenticação/autorização | Spring Security + JWT | ⏳ Emissor do token a definir (próprio ou Spring Authorization Server) |
-| Testes | JUnit, Testcontainers, Spring Modulith Test / ArchUnit | ⏳ Versões a definir |
+| Framework backend | [Spring Boot](https://start.spring.io/) 4.1.2 | ✅ Definido |
+| Persistência | Spring Data JPA / Hibernate 7.4 | ✅ Definido (versão gerenciada pelo Spring Boot) |
+| Modularidade | Spring Modulith 2.1.1 | ✅ Definido |
+| Autenticação/autorização | Spring Security 7.1 + JWT (OAuth2 Resource Server) | ⏳ Emissor do token a definir (próprio ou Spring Authorization Server) |
+| Documentação da API | SpringDoc OpenAPI 3.2.0 (Swagger UI) | ✅ Definido |
+| Observabilidade | Spring Boot Actuator | ✅ Definido |
+| Testes | JUnit 6, Testcontainers 2, Spring Modulith Test / ArchUnit | ✅ Definido (ArchUnit ainda a adicionar ao `pom.xml`) |
 | Containers | Docker | ✅ Definido |
 | Frontend | — | ⏳ Framework a definir |
 
@@ -370,8 +372,9 @@ src/
 ```
 
 ## Backend
+Código no repositório [tcc-backend-ads-ifba](https://github.com/JandersonMota/tcc-backend-ads-ifba), gerado pelo Spring Initializr (Group `br.com.leija`, Artifact `tcc-backend-ads-ifba`, Package name `br.com.leija`, Jar, YAML). A classe principal `TccBackendAdsIfbaApplication` fica no pacote raiz, e cada subpacote direto é um módulo do Spring Modulith.
 ```
-src/main/java/com/seuprojeto
+src/main/java/br/com/leija
 │
 ├── compartilhado
 │   ├── dominio
