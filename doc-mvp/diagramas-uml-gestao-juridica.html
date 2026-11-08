@@ -1062,11 +1062,11 @@ figure.diagram.ampliavel .scroll { cursor: zoom-in; }
     A --&gt; B["Cadastra usuários (RF04)"]
     B --&gt; L{"Limite do plano Free&lt;br/&gt;atingido? (RN09)"}
     L -- sim --&gt; X["Criação bloqueada&lt;br/&gt;(leitura e edição continuam)"]
-    L -- não --&gt; C["Define grupos e permissões (RF05, RF06)"]
-    X --&gt; C
-    C --&gt; D["Cadastra cliente (RF11)"]
-    D --&gt; E["Cadastra processo e vincula cliente (RF12, RF13)"]
-    E --&gt; F["Cria atividade (RF18)"]
+    L -- não --&gt; C["Cadastra cliente (RF11)"]
+    X --&gt; F
+    C --&gt; D["Cadastra processo e vincula cliente (RF12, RF13)"]
+    D --&gt; E["Cria atividade (RF18)"]
+    E --&gt; F["Define grupos e permissões (RF05, RF06)"]
     F --&gt; G["Delega atividade (RF19)"]
     G --&gt; H["Usuário executa e altera status (RF20)"]
     H --&gt; I["Registra movimentação (RF15)"]
