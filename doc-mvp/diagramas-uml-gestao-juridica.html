@@ -875,20 +875,21 @@ figure.diagram.ampliavel .scroll { cursor: zoom-in; }
     [*] --&gt; A_FAZER : criar
 
     A_FAZER --&gt; EM_ANDAMENTO : iniciar
-    EM_ANDAMENTO --&gt; EM_REVISAO : enviar para revisão
-    EM_REVISAO --&gt; CONCLUIDA : aprovar
-    CONCLUIDA --&gt; A_FAZER : reabrir
+    EM_ANDAMENTO --&gt; CONCLUIDA : aprovar
+    CONCLUIDA --&gt; REFAZER : reabrir
+    REFAZER --&gt; EM_ANDAMENTO : reabrir
 
     A_FAZER --&gt; BLOQUEADA : bloquear
     EM_ANDAMENTO --&gt; BLOQUEADA : bloquear
-    EM_REVISAO --&gt; BLOQUEADA : bloquear
 
     A_FAZER --&gt; CANCELADA : cancelar
     EM_ANDAMENTO --&gt; CANCELADA : cancelar
-    EM_REVISAO --&gt; CANCELADA : cancelar
     BLOQUEADA --&gt; CANCELADA : cancelar
 
     CANCELADA --&gt; [*]
+
+    REFAZER --&gt; BLOQUEADA : bloquear
+    REFAZER --&gt; CANCELADA : cancelar
 
     note right of BLOQUEADA
         Retorno de BLOQUEADA ao status
